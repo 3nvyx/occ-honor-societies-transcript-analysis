@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 
 const SOCIETY_FILES = [
@@ -23,9 +24,11 @@ const SOCIETY_FILES = [
 ];
 
 let cachedContext = null;
+const moduleDir = path.dirname(fileURLToPath(import.meta.url));
+const defaultRepoRoot = path.resolve(moduleDir, '..', '..', '..');
 
 function resolveRepoRoot() {
-  return process.env.TRANSCRIPT_REPO_ROOT || path.resolve(process.cwd(), '..');
+  return process.env.TRANSCRIPT_REPO_ROOT || defaultRepoRoot;
 }
 
 function buildFileList(repoRoot) {
